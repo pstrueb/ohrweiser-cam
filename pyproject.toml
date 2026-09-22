@@ -1,0 +1,29 @@
+[project]
+name = "oeffi-cam"
+version = "0.1.0"
+description = "Webcam prototype that recognizes bus/tram line signs and announces them via TTS"
+authors = [{ name = "Patrick Strübin", email = "patrick.struebin@summitwave.eu" }]
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "opencv-python (>=4.10,<6.0)",
+    "pillow (>=10.0,<13.0)",
+    "numpy (>=1.26,<3.0)",
+    "tesserocr (>=2.7,<3.0)",
+    # tesserocr is a C extension built against cysignals; a mismatched
+    # cysignals fails at import with an ABI error, so keep the floor here
+    "cysignals (>=1.12.6,<2.0)",
+]
+
+[project.scripts]
+oeffi-cam = "oeffi_cam:main"
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+
+[build-system]
+requires = ["poetry-core>=2.0"]
+build-backend = "poetry.core.masonry.api"
