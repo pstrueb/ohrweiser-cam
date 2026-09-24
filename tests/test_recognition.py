@@ -13,7 +13,7 @@ import pytest
 from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from oeffi_cam import classify, mirror_box, read_line  # noqa: E402
+from ohrweiser import Voter, classify, mirror_box, read_line  # noqa: E402
 
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
@@ -166,3 +166,38 @@ def test_foreground_mask_keeps_a_held_sign():
     frame = render("4")
     moving = np.full(frame.shape[:2], 255, np.uint8)
     assert read_line(frame, foreground=moving)[:2] == ("4", "tram")
+
+
+def line_drawn_four(thickness: int) -> np.ndarray:
+    """A 4 made of straight bars, 300px tall -- the shape a window cross makes."""
+    frame = np.full((480, 640, 3), 235, np.uint8)
+    bars = np.array([(360, 400), (360, 100), (220, 300), (400, 300)], np.int32)
+    cv2.polylines(frame, [bars], False, (40, 40, 40), thickness, cv2.LINE_AA)
+    return frame
+
+
+@pytest.mark.parametrize("thickness", [8, 12, 20])
+def test_thin_bars_are_not_a_printed_glyph(thickness):
+    """Regression: a window cross behind the user was announced as tram 4 at 96%.
+
+    Its bars are 3-7% of its height; printed glyphs are 10-25%.
+    """
+    assert read_line(line_drawn_four(thickness)) is None
+
+
+def test_the_same_shape_in_a_print_weight_still_reads():
+    assert read_line(line_drawn_four(40))[:2] == ("4", "tram")
+
+
+def test_voter_needs_five_of_seven():
+    voter = Voter()
+    said = [voter.push(line, now=0.0) for line in ["A", "", "A", "A", "B", "A"]]
+    assert said[-1] is None and voter.confirmed is None
+    assert voter.push("A", now=0.0) == ("A", "bus")
+
+
+def test_voter_does_not_repeat_itself_within_the_cooldown():
+    voter = Voter()
+    said = [voter.push("7", now=t * 0.1) for t in range(40)]    # 4 s of the same sign
+    assert [s for s in said if s] == [("7", "tram")]
+    assert voter.push("7", now=100.0) == ("7", "tram")          # later: say it again

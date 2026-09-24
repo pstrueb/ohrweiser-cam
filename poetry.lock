@@ -15,73 +15,34 @@ files = [
 
 [[package]]
 name = "cysignals"
-version = "1.12.5"
+version = "1.12.6"
 description = "Interrupt and signal handling for Cython"
 optional = false
-python-versions = "<3.14,>=3.9"
+python-versions = ">=3.12"
 groups = ["main"]
 files = [
-    {file = "cysignals-1.12.5-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:78ec72c069b0c0fbf81c52afadf4220e49ff04405976cd3ac1d1fb3561bdc8b3"},
-    {file = "cysignals-1.12.5-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:dcea06cc0902ed5453345bc7a8e6a2237b222ce772ab3cc137b135ebcb7e410c"},
-    {file = "cysignals-1.12.5-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:131e70b8c1eead0781c34d1cd5b5d3fe1c9228a985ce548f277a68d10df691ff"},
-    {file = "cysignals-1.12.5-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:215fdf50197256e456075c0a80de67006584a67d7f489ff1436c1b2f00592e2d"},
-    {file = "cysignals-1.12.5-cp310-cp310-musllinux_1_2_aarch64.whl", hash = "sha256:a8631d5ed0c15951c5ab653298efd76e0a8d48912693dd8287cb52d4b631783a"},
-    {file = "cysignals-1.12.5-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:13d61803e20d471f3bafa2acbb290168609b8854aaefb6feaab2208ef4906b9a"},
-    {file = "cysignals-1.12.5-cp310-cp310-win_amd64.whl", hash = "sha256:8636cb41552467e5037220b5368ef10a3d9890b1991e87640769a8f00ebad0c6"},
-    {file = "cysignals-1.12.5-cp310-cp310-win_arm64.whl", hash = "sha256:2fc8b1e90a1589c899d815635b073d0a9614309cc981db8c53c55104a11412f4"},
-    {file = "cysignals-1.12.5-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:b8b757e49c9181d874c08271bcbc3ded677f43263e2370b36e41556d897fb053"},
-    {file = "cysignals-1.12.5-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:82022c3f20f44e52e1c1767716ebf936f15ed9dc2539ae0f840108a59c8313b2"},
-    {file = "cysignals-1.12.5-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:9c2daad79f36bf288be9501fcfac4eaacd80113376128e67151a45a57a6470d5"},
-    {file = "cysignals-1.12.5-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:c37abf7fe2c68c7b63bb5df1f0bf54abab69f7386e767c625d6924dc38746f45"},
-    {file = "cysignals-1.12.5-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:90404a01595e0fcc2f55760ab25ba4ea995c3143739da976364a64fa16306a47"},
-    {file = "cysignals-1.12.5-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:f14d212027280f37fc1324a66737f78755be010101e0ee8ddd3c98c0dcef4276"},
-    {file = "cysignals-1.12.5-cp311-cp311-win_amd64.whl", hash = "sha256:e372512ad4137ffeb5ea9626854fc0f7feb0fafca07b2ea5f8c5a968138c23f3"},
-    {file = "cysignals-1.12.5-cp311-cp311-win_arm64.whl", hash = "sha256:e5f9f1d1f47e9b680c69c63a7faf1a0863736f6f00311b273c076810ef40509c"},
-    {file = "cysignals-1.12.5-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:f7c4074c9a9ae1294abf6a7de224174c2797e3b8f0c86881a04557224ad766bd"},
-    {file = "cysignals-1.12.5-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:08dc79fd7470f828d7ae2f70b534a2710d39c1f194ffeb9649fbdff6e6f0bfff"},
-    {file = "cysignals-1.12.5-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:9c8011f72efc59fda3cf72096e7cdfc00f415629252c161c29eb721427a666a8"},
-    {file = "cysignals-1.12.5-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:eccbcfd762de37daf4a01a0a77ef653561a153c48c2db9104916d36ebbd3cf24"},
-    {file = "cysignals-1.12.5-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:741c9bed4ef802c5892f62c6c8ad96390610bcfb617a0250a86c595eecdd13a9"},
-    {file = "cysignals-1.12.5-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:10e57664e3a2c3e7cdd270b7fa041859b552c2813c195b1247e3c116bf40226b"},
-    {file = "cysignals-1.12.5-cp312-cp312-win_amd64.whl", hash = "sha256:8824990cdf09891ccdd8f5d0f839762948c90535b56d476fcf8c0dddd27ca53b"},
-    {file = "cysignals-1.12.5-cp312-cp312-win_arm64.whl", hash = "sha256:f8e27a442aea569e824b12cd4b8c8599d94e44272e3dfaa56d4ac98215aef7c1"},
-    {file = "cysignals-1.12.5-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:c2131f0a724d3f5c0d6ae11c100641a491b223b075d03aa83c69b1d44736a099"},
-    {file = "cysignals-1.12.5-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:03cb462edcc1ee7b63f2108bbeb89ce04ddca3baeb4d490f26c997ec23f392f1"},
-    {file = "cysignals-1.12.5-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:64895f286cb6e0f070db6ea8c808039fda21b2c3c9876e3486e6f36aa956b557"},
-    {file = "cysignals-1.12.5-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:0008a7e53f4889f75c5132c06b42723e80ec40f1035be1cbe4d909896e8f55dc"},
-    {file = "cysignals-1.12.5-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:800b6b7ad6c45590a2a30d05889378beee9948d8828bc8aafd79694825b595b6"},
-    {file = "cysignals-1.12.5-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:c09035afcd3017250e796247f3eaf5e79a9a7090b1e104a962b8eb4c87bf9ebe"},
-    {file = "cysignals-1.12.5-cp313-cp313-win_amd64.whl", hash = "sha256:7392bbc6a46ee9b1eb973ec994f95f7421257a474c071c56def37c7ce0ea8d87"},
-    {file = "cysignals-1.12.5-cp313-cp313-win_arm64.whl", hash = "sha256:1a2ebb66883be5e493741c5db787d509b2c1f860d32829a184dbc912b33a9f4e"},
-    {file = "cysignals-1.12.5-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:421b7e880255d97a78b33c2a7b5fc2fb8096ebe5ca4b8b6e7a9cff02536c433d"},
-    {file = "cysignals-1.12.5-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:ea8988f1b6b9eaff7a30e47593e9856b1888fe881b1e10c9c3158ba3ea3c23d3"},
-    {file = "cysignals-1.12.5-cp39-cp39-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:4641b141545dc719ef694608ad717507e39b1c1521297a15a25d36a441f937fb"},
-    {file = "cysignals-1.12.5-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:52b8b72f9dd07d8a1d87633a53afab825eb6027f3a1b92777df590fb0ac9c3c1"},
-    {file = "cysignals-1.12.5-cp39-cp39-musllinux_1_2_aarch64.whl", hash = "sha256:32bfec54acb3aaf0f5a89411221974aad2507eae17009029df44795f4c0e9317"},
-    {file = "cysignals-1.12.5-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:95ace34327ded6e3634185d03d2defc83e74d644d8ecc8cd2738558e60ee6a2f"},
-    {file = "cysignals-1.12.5-cp39-cp39-win_amd64.whl", hash = "sha256:c512da79dddb83315912704d66d160d2942e792d055b44b090b37bf8210277f1"},
-    {file = "cysignals-1.12.5-cp39-cp39-win_arm64.whl", hash = "sha256:78e5be4b7d6173afae961ab896e38b7439f6e0873031bf059677fdc5765ecfa6"},
-    {file = "cysignals-1.12.5.tar.gz", hash = "sha256:8f8ed409043d028b59d063dc4c069cbf12a750534757ce06f38eeac5ff368700"},
+    {file = "cysignals-1.12.6-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:3ee654e14c0747d39711d169a664766e0140327a1d3ea1e0fccda1e31ef74e53"},
+    {file = "cysignals-1.12.6-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:26a79edceeee7d74609b0cc73b4c3d93301e488dca28b166b3667049a2ee559c"},
+    {file = "cysignals-1.12.6-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:cdcf379028c9a4afcc957d046ce492c3418ac931ddf2089d21d34f337b64ecfb"},
+    {file = "cysignals-1.12.6-cp312-cp312-win_amd64.whl", hash = "sha256:ae2119e7194f48f31eebdaf238fe09a69ce6c89b73f8733a6a9b7b9386bbf414"},
+    {file = "cysignals-1.12.6-cp312-cp312-win_arm64.whl", hash = "sha256:3a664ba18028400abf1221c412ca914795c4cfe9564b9bde1e065e1ab472e668"},
+    {file = "cysignals-1.12.6-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:7cfce1fb8b5b30027518d29c472ea78377b049c74aa72b2750d203ba6e791327"},
+    {file = "cysignals-1.12.6-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:d2a54eb2787e7e93855e06e420740b51b61c06dd466b8ad48a01cf5bc3bc2375"},
+    {file = "cysignals-1.12.6-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:63bd2aeab7e515a530176a007478129a043415de7fa08519d9721689b47f91b3"},
+    {file = "cysignals-1.12.6-cp313-cp313-win_amd64.whl", hash = "sha256:8c3987e9607e7db896e99aa23066366544151aba0f2155fc3da7e19d20d66439"},
+    {file = "cysignals-1.12.6-cp313-cp313-win_arm64.whl", hash = "sha256:f85bc3d7bf6d8a79d53685bf466e25b95b799787397622265515a72bb7addf6c"},
+    {file = "cysignals-1.12.6-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:f0e1b9c1f0a1a6ddc3b550893aa032cb2e865a60b8480d3ec61bf4f24f232cf1"},
+    {file = "cysignals-1.12.6-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:948d9b0fcdb54d6ef0624991fb22b9c57a63467da56d46bc1f8edb618c900584"},
+    {file = "cysignals-1.12.6-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:8eceead50d00487179017eb81b00a7bbf2acfcef6869ba950a13e0e3ee5fef07"},
+    {file = "cysignals-1.12.6-cp314-cp314-win_amd64.whl", hash = "sha256:77fc10e45f7ee704adf6d217812a6fa58b983fff22ceb1c8530dd27bc067d6d0"},
+    {file = "cysignals-1.12.6-cp314-cp314-win_arm64.whl", hash = "sha256:34e19f1abcf40d08634b07bd4ac21852f9e4091e9245012b031fa923a1d7d7fe"},
+    {file = "cysignals-1.12.6-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:83c4f6bb0cd1fc58fc55a3f0dbca0e1229113e3faf06e9a1a7f9cb19a4263f6f"},
+    {file = "cysignals-1.12.6-cp314-cp314t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:8fd29e7452de0d8c7a929b29e8ba7f8bfa84fca746e80263799db026b56b8a1e"},
+    {file = "cysignals-1.12.6-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:576c16e08b4a917c23ca6d586131a53bedc921b9af8e311dbfc145d39dacd9cd"},
+    {file = "cysignals-1.12.6-cp314-cp314t-win_amd64.whl", hash = "sha256:8876ac137f055c20cba80b73bce8908afe24bb62fa1c6f9889c30354e53ea4e6"},
+    {file = "cysignals-1.12.6-cp314-cp314t-win_arm64.whl", hash = "sha256:ba487c5b75c2b4ab480bc5bc59d6c0a540443db133ce1565e925179e7f5f3c10"},
+    {file = "cysignals-1.12.6.tar.gz", hash = "sha256:3ef3a37bdb244821b85475a08e2762ca1019570b369e321504995fa9a54675ce"},
 ]
-
-[[package]]
-name = "exceptiongroup"
-version = "1.3.1"
-description = "Backport of PEP 654 (exception groups)"
-optional = false
-python-versions = ">=3.7"
-groups = ["dev"]
-markers = "python_version == \"3.10\""
-files = [
-    {file = "exceptiongroup-1.3.1-py3-none-any.whl", hash = "sha256:a7a39a3bd276781e98394987d3a5701d0c4edffb633bb7a5144577f82c773598"},
-    {file = "exceptiongroup-1.3.1.tar.gz", hash = "sha256:8b412432c6055b0b7d14c310000ae93352ed6754f70fa8f7c34141f91c4e3219"},
-]
-
-[package.dependencies]
-typing-extensions = {version = ">=4.6.0", markers = "python_version < \"3.13\""}
-
-[package.extras]
-test = ["pytest (>=6)"]
 
 [[package]]
 name = "iniconfig"
@@ -344,12 +305,10 @@ files = [
 
 [package.dependencies]
 colorama = {version = ">=0.4", markers = "sys_platform == \"win32\""}
-exceptiongroup = {version = ">=1", markers = "python_version < \"3.11\""}
 iniconfig = ">=1"
 packaging = ">=20"
 pluggy = ">=1.5,<2"
 pygments = ">=2.7.2"
-tomli = {version = ">=1", markers = "python_version < \"3.11\""}
 
 [package.extras]
 dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "requests", "setuptools", "xmlschema"]
@@ -403,78 +362,7 @@ files = [
 [package.dependencies]
 cysignals = "*"
 
-[[package]]
-name = "tomli"
-version = "2.4.1"
-description = "A lil' TOML parser"
-optional = false
-python-versions = ">=3.8"
-groups = ["dev"]
-markers = "python_version == \"3.10\""
-files = [
-    {file = "tomli-2.4.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:f8f0fc26ec2cc2b965b7a3b87cd19c5c6b8c5e5f436b984e85f486d652285c30"},
-    {file = "tomli-2.4.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:4ab97e64ccda8756376892c53a72bd1f964e519c77236368527f758fbc36a53a"},
-    {file = "tomli-2.4.1-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:96481a5786729fd470164b47cdb3e0e58062a496f455ee41b4403be77cb5a076"},
-    {file = "tomli-2.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:5a881ab208c0baf688221f8cecc5401bd291d67e38a1ac884d6736cbcd8247e9"},
-    {file = "tomli-2.4.1-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:47149d5bd38761ac8be13a84864bf0b7b70bc051806bc3669ab1cbc56216b23c"},
-    {file = "tomli-2.4.1-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:ec9bfaf3ad2df51ace80688143a6a4ebc09a248f6ff781a9945e51937008fcbc"},
-    {file = "tomli-2.4.1-cp311-cp311-win32.whl", hash = "sha256:ff2983983d34813c1aeb0fa89091e76c3a22889ee83ab27c5eeb45100560c049"},
-    {file = "tomli-2.4.1-cp311-cp311-win_amd64.whl", hash = "sha256:5ee18d9ebdb417e384b58fe414e8d6af9f4e7a0ae761519fb50f721de398dd4e"},
-    {file = "tomli-2.4.1-cp311-cp311-win_arm64.whl", hash = "sha256:c2541745709bad0264b7d4705ad453b76ccd191e64aa6f0fc66b69a293a45ece"},
-    {file = "tomli-2.4.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:c742f741d58a28940ce01d58f0ab2ea3ced8b12402f162f4d534dfe18ba1cd6a"},
-    {file = "tomli-2.4.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:7f86fd587c4ed9dd76f318225e7d9b29cfc5a9d43de44e5754db8d1128487085"},
-    {file = "tomli-2.4.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:ff18e6a727ee0ab0388507b89d1bc6a22b138d1e2fa56d1ad494586d61d2eae9"},
-    {file = "tomli-2.4.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:136443dbd7e1dee43c68ac2694fde36b2849865fa258d39bf822c10e8068eac5"},
-    {file = "tomli-2.4.1-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:5e262d41726bc187e69af7825504c933b6794dc3fbd5945e41a79bb14c31f585"},
-    {file = "tomli-2.4.1-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:5cb41aa38891e073ee49d55fbc7839cfdb2bc0e600add13874d048c94aadddd1"},
-    {file = "tomli-2.4.1-cp312-cp312-win32.whl", hash = "sha256:da25dc3563bff5965356133435b757a795a17b17d01dbc0f42fb32447ddfd917"},
-    {file = "tomli-2.4.1-cp312-cp312-win_amd64.whl", hash = "sha256:52c8ef851d9a240f11a88c003eacb03c31fc1c9c4ec64a99a0f922b93874fda9"},
-    {file = "tomli-2.4.1-cp312-cp312-win_arm64.whl", hash = "sha256:f758f1b9299d059cc3f6546ae2af89670cb1c4d48ea29c3cacc4fe7de3058257"},
-    {file = "tomli-2.4.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:36d2bd2ad5fb9eaddba5226aa02c8ec3fa4f192631e347b3ed28186d43be6b54"},
-    {file = "tomli-2.4.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:eb0dc4e38e6a1fd579e5d50369aa2e10acfc9cace504579b2faabb478e76941a"},
-    {file = "tomli-2.4.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:c7f2c7f2b9ca6bdeef8f0fa897f8e05085923eb091721675170254cbc5b02897"},
-    {file = "tomli-2.4.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:f3c6818a1a86dd6dca7ddcaaf76947d5ba31aecc28cb1b67009a5877c9a64f3f"},
-    {file = "tomli-2.4.1-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:d312ef37c91508b0ab2cee7da26ec0b3ed2f03ce12bd87a588d771ae15dcf82d"},
-    {file = "tomli-2.4.1-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:51529d40e3ca50046d7606fa99ce3956a617f9b36380da3b7f0dd3dd28e68cb5"},
-    {file = "tomli-2.4.1-cp313-cp313-win32.whl", hash = "sha256:2190f2e9dd7508d2a90ded5ed369255980a1bcdd58e52f7fe24b8162bf9fedbd"},
-    {file = "tomli-2.4.1-cp313-cp313-win_amd64.whl", hash = "sha256:8d65a2fbf9d2f8352685bc1364177ee3923d6baf5e7f43ea4959d7d8bc326a36"},
-    {file = "tomli-2.4.1-cp313-cp313-win_arm64.whl", hash = "sha256:4b605484e43cdc43f0954ddae319fb75f04cc10dd80d830540060ee7cd0243cd"},
-    {file = "tomli-2.4.1-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:fd0409a3653af6c147209d267a0e4243f0ae46b011aa978b1080359fddc9b6cf"},
-    {file = "tomli-2.4.1-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:a120733b01c45e9a0c34aeef92bf0cf1d56cfe81ed9d47d562f9ed591a9828ac"},
-    {file = "tomli-2.4.1-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:559db847dc486944896521f68d8190be1c9e719fced785720d2216fe7022b662"},
-    {file = "tomli-2.4.1-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:01f520d4f53ef97964a240a035ec2a869fe1a37dde002b57ebc4417a27ccd853"},
-    {file = "tomli-2.4.1-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:7f94b27a62cfad8496c8d2513e1a222dd446f095fca8987fceef261225538a15"},
-    {file = "tomli-2.4.1-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:ede3e6487c5ef5d28634ba3f31f989030ad6af71edfb0055cbbd14189ff240ba"},
-    {file = "tomli-2.4.1-cp314-cp314-win32.whl", hash = "sha256:3d48a93ee1c9b79c04bb38772ee1b64dcf18ff43085896ea460ca8dec96f35f6"},
-    {file = "tomli-2.4.1-cp314-cp314-win_amd64.whl", hash = "sha256:88dceee75c2c63af144e456745e10101eb67361050196b0b6af5d717254dddf7"},
-    {file = "tomli-2.4.1-cp314-cp314-win_arm64.whl", hash = "sha256:b8c198f8c1805dc42708689ed6864951fd2494f924149d3e4bce7710f8eb5232"},
-    {file = "tomli-2.4.1-cp314-cp314t-macosx_10_15_x86_64.whl", hash = "sha256:d4d8fe59808a54658fcc0160ecfb1b30f9089906c50b23bcb4c69eddc19ec2b4"},
-    {file = "tomli-2.4.1-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:7008df2e7655c495dd12d2a4ad038ff878d4ca4b81fccaf82b714e07eae4402c"},
-    {file = "tomli-2.4.1-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:1d8591993e228b0c930c4bb0db464bdad97b3289fb981255d6c9a41aedc84b2d"},
-    {file = "tomli-2.4.1-cp314-cp314t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:734e20b57ba95624ecf1841e72b53f6e186355e216e5412de414e3c51e5e3c41"},
-    {file = "tomli-2.4.1-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:8a650c2dbafa08d42e51ba0b62740dae4ecb9338eefa093aa5c78ceb546fcd5c"},
-    {file = "tomli-2.4.1-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:504aa796fe0569bb43171066009ead363de03675276d2d121ac1a4572397870f"},
-    {file = "tomli-2.4.1-cp314-cp314t-win32.whl", hash = "sha256:b1d22e6e9387bf4739fbe23bfa80e93f6b0373a7f1b96c6227c32bef95a4d7a8"},
-    {file = "tomli-2.4.1-cp314-cp314t-win_amd64.whl", hash = "sha256:2c1c351919aca02858f740c6d33adea0c5deea37f9ecca1cc1ef9e884a619d26"},
-    {file = "tomli-2.4.1-cp314-cp314t-win_arm64.whl", hash = "sha256:eab21f45c7f66c13f2a9e0e1535309cee140182a9cdae1e041d02e47291e8396"},
-    {file = "tomli-2.4.1-py3-none-any.whl", hash = "sha256:0d85819802132122da43cb86656f8d1f8c6587d54ae7dcaf30e90533028b49fe"},
-    {file = "tomli-2.4.1.tar.gz", hash = "sha256:7c7e1a961a0b2f2472c1ac5b69affa0ae1132c39adcb67aba98568702b9cc23f"},
-]
-
-[[package]]
-name = "typing-extensions"
-version = "4.16.0"
-description = "Backported and Experimental Type Hints for Python 3.9+"
-optional = false
-python-versions = ">=3.9"
-groups = ["dev"]
-markers = "python_version == \"3.10\""
-files = [
-    {file = "typing_extensions-4.16.0-py3-none-any.whl", hash = "sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"},
-    {file = "typing_extensions-4.16.0.tar.gz", hash = "sha256:dc983d19a509c94dba722ee6abd33940f7c05a89e243c47e907eb4db6f1a43e5"},
-]
-
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.10,<3.14"
-content-hash = "0ee4e56bbcbbbf63cc12f72916b1e2d24fee1d5284414e5882b31e1bbd136a80"
+python-versions = ">=3.12,<3.14"
+content-hash = "fe06c78cf1e1e0daad89c8a127028eba51e80bf65e7897819c73cbb9f8e65505"

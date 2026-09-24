@@ -1,4 +1,4 @@
-# Öffi-Cam
+# Ohrweiser
 
 Prototype: point the webcam at a printed line sign, and it announces the line out loud.
 
@@ -39,11 +39,11 @@ runs, falling back to the (much slower) `tesseract` subprocess.
 ## Run
 
 ```bash
-poetry run python oeffi_cam.py                 # German announcements
-poetry run python oeffi_cam.py --lang en       # English
-poetry run python oeffi_cam.py --camera 2      # pick another /dev/video*
-poetry run python oeffi_cam.py --rate 0.7      # slower speech
-poetry run python oeffi_cam.py --mirror        # selfie-view preview
+poetry run python ohrweiser.py                 # German announcements
+poetry run python ohrweiser.py --lang en       # English
+poetry run python ohrweiser.py --camera 2      # pick another /dev/video*
+poetry run python ohrweiser.py --rate 0.7      # slower speech
+poetry run python ohrweiser.py --mirror        # selfie-view preview
 ```
 
 Hold a sign up anywhere in view; the box shows what it locked onto. Keys: `q`
@@ -67,8 +67,21 @@ Four cards per A4 page with cut lines. Print, cut, hold up.
 poetry run pytest
 ```
 
-61 tests render signs synthetically and push them through the real pipeline — no
+69 tests render signs synthetically and push them through the real pipeline — no
 camera needed, so OCR settings can be tuned without printing anything.
+
+## Measuring false announcements on a real session
+
+Synthetic signs cannot show what the room gets mistaken for. Record a session,
+then replay it through the same pipeline and vote the app uses:
+
+```bash
+poetry run python ohrweiser.py --dump rec/        # records frames + motion masks
+poetry run python replay.py rec/                  # lists announcements, writes announcements.png
+poetry run python replay.py rec/ --labels rec.txt # false announcements per minute, misses
+```
+
+`rec.txt` has one line per sign held up, in dump-file times: `094536 094548 J`.
 
 ## How a reading becomes an announcement
 
@@ -103,6 +116,13 @@ learned as background; move it slightly to re-trigger.
   what does is that a sign is something you *hold up*. A glyph is now only
   accepted where the scene actually changed. Measured over 1600 frames of a real
   session this kept 100% of genuine readings and removed 87% of false ones.
+* **Moving in front of a window re-admits it.** The motion filter passes the
+  window cross whenever you move in front of it, and it was announced as tram
+  4 and 3; a hand on the chin became a J. Printed glyphs are drawn with one pen,
+  so their strokes are an even 10-25% of the glyph height; the window bars
+  measured 3%, the chin varied wildly. Blobs with thin or uneven strokes are
+  now dropped. On a recorded 2.4-minute session this removed all 4 false
+  announcements and kept both real ones.
 * **No single OCR configuration reads every glyph.** A lone O or Q only comes
   back under psm 6; a lone P only at 64px tall; a lone B only at 80px or more.
   Hence the scale and psm fallbacks.

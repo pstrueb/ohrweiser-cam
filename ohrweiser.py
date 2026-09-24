@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Öffi-Cam: recognize bus/tram line signs from the webcam and announce them via TTS.
+"""Ohrweiser: recognize bus/tram line signs from the webcam and announce them via TTS.
 
 Prototype. Deliberately lightweight:
   * OpenCV for capture + preprocessing
@@ -51,6 +51,9 @@ MIN_FOREGROUND = 0.04     # A sign is something you HOLD UP: this fraction of th
                           # A window mullion otherwise reads as a confident 4.
                           # Measured over 1600 real frames: this keeps 100% of
                           # genuine readings and drops 87% of the false ones.
+MIN_STROKE = 0.08         # A printed glyph's strokes are an even fraction of its
+MAX_STROKE_CV = 0.5       # height (bold sans ~0.2, serif ~0.12). A window cross
+                          # measures ~0.03 and a chin/hand varies wildly (cv ~1).
 GLYPH_HEIGHTS = (64, 96)  # heights the cropped sign is normalized to before OCR.
                           # No single one works for every glyph: a lone P reads
                           # only at 64, a lone B only at 80+. Cheap to try both.
@@ -58,7 +61,7 @@ RESPEAK_AFTER = 6.0      # seconds before the same line is announced again
 OCR_EVERY = 1            # frames handed to the OCR thread; it drops stale ones
 
 DEBUG = False            # --debug: log every OCR attempt
-DEBUG_DIR = ""           # --dump DIR: also write the ROI + binarized crops there
+DEBUG_DIR = ""           # --dump DIR: record frames + motion masks for replay.py
 
 PHRASES = {
     "de": {"bus": "Buslinie {}", "tram": "Straßenbahn Linie {}"},
@@ -181,6 +184,21 @@ def _variants(bgr: np.ndarray):
         flat, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 41, 12), flat
 
 
+def stroke_profile(mask: np.ndarray) -> tuple[float, float]:
+    """(stroke width in px, coefficient of variation) of a blob's strokes.
+
+    The distance transform peaks along each stroke's centre line at half its
+    width. A printed glyph is drawn with one pen, so those peaks agree; a window
+    cross is thin, and a face or hand mixes thin edges with solid patches.
+    """
+    m = np.pad(mask.astype(np.uint8), 1)
+    dt = cv2.distanceTransform(m, cv2.DIST_L2, 3)
+    ridge = dt[(m > 0) & (dt >= cv2.dilate(dt, np.ones((3, 3), np.uint8)))]
+    if ridge.size == 0:
+        return 0.0, float("inf")
+    return 2.0 * float(np.median(ridge)), float(ridge.std() / max(ridge.mean(), 1e-3))
+
+
 def _blobs(binary: np.ndarray, flat: np.ndarray, foreground: np.ndarray | None = None):
     """Dark blobs that look like ink sitting on paper.
 
@@ -236,6 +254,11 @@ def _blobs(binary: np.ndarray, flat: np.ndarray, foreground: np.ndarray | None =
             # A held sign is foreground; the window frame behind it never is.
             if (foreground[y:y + ch, x:x + cw] > 0).mean() < MIN_FOREGROUND:
                 continue
+
+        # Last, as the costliest test: only a handful of blobs get this far.
+        width, spread = stroke_profile(labels[y:y + ch, x:x + cw] == i)
+        if width < MIN_STROKE * ch or spread > MAX_STROKE_CV:
+            continue
 
         found.append({"box": (int(x), int(y), int(cw), int(ch)), "area": int(cw * ch),
                       "edge": x <= 1 or y <= 1 or x + cw >= w - 1 or y + ch >= h - 1,
@@ -447,6 +470,33 @@ def read_line(frame: np.ndarray,
     return best[:4] if best else None
 
 
+class Voter:
+    """Turns per-frame readings into announcements: 5-of-7 agreement, then a
+    re-announce cooldown. Shared by the app and replay.py so a recorded session
+    is scored exactly as it would have been heard."""
+
+    def __init__(self) -> None:
+        self.votes: deque[str] = deque(maxlen=VOTE_WINDOW)
+        self.confirmed: tuple[str, str] | None = None
+        self.last_spoken = ("", 0.0)
+
+    def push(self, line: str, now: float) -> tuple[str, str] | None:
+        """Add one frame's reading ("" for none); return (line, kind) when it is due
+        to be spoken."""
+        self.votes.append(line)
+        top, count = Counter(self.votes).most_common(1)[0]
+        if count < VOTE_MIN:
+            return None
+        if not top:
+            self.confirmed = None
+            return None
+        self.confirmed = (top, classify(top)[1])
+        if self.last_spoken[0] == top and now - self.last_spoken[1] < RESPEAK_AFTER:
+            return None
+        self.last_spoken = (top, now)
+        return self.confirmed
+
+
 def mirror_box(box: tuple, width: int) -> tuple:
     """Move a box from captured coordinates into mirrored preview coordinates."""
     x, y, w, h = box
@@ -454,16 +504,14 @@ def mirror_box(box: tuple, width: int) -> tuple:
 
 
 # ---------------------------------------------------------------------------- UI
-class OeffiCam:
+class Ohrweiser:
     COLORS = {"bus": "#1d6fd6", "tram": "#d63b1d", "none": "#555555"}
 
     def __init__(self, root: tk.Tk, args: argparse.Namespace) -> None:
         self.root = root
         self.args = args
         self.speaker = Speaker(args.lang, args.voice, args.rate)
-        self.votes: deque[str] = deque(maxlen=VOTE_WINDOW)
-        self.confirmed: tuple[str, str] | None = None
-        self.last_spoken = ("", 0.0)
+        self.voter = Voter()
         self.frame_no = 0
         self.fps_t, self.fps = time.time(), 0.0
         self.last_conf = 0.0
@@ -487,7 +535,7 @@ class OeffiCam:
         if not self.cap.isOpened():
             raise SystemExit(
                 f"Could not open camera {args.camera}. Another program may be holding "
-                f"it -- close any other Öffi-Cam window, or try --camera 1.")
+                f"it -- close any other Ohrweiser window, or try --camera 1.")
 
         threading.Thread(target=self._ocr_loop, daemon=True).start()
         self._build_ui()
@@ -495,7 +543,7 @@ class OeffiCam:
 
     # -- widgets
     def _build_ui(self) -> None:
-        self.root.title("Öffi-Cam — Linienerkennung")
+        self.root.title("Ohrweiser — Linienerkennung")
         self.root.configure(bg="#111111")
         self.root.protocol("WM_DELETE_WINDOW", self.quit)
 
@@ -557,14 +605,10 @@ class OeffiCam:
         self.lang_btn.config(text=f"Sprache: {self.args.lang.upper()}")
 
     def repeat(self) -> None:
-        if self.confirmed:
-            self.announce(*self.confirmed, force=True)
+        if self.voter.confirmed:
+            self.announce(*self.voter.confirmed)
 
-    def announce(self, line: str, kind: str, force: bool = False) -> None:
-        now = time.time()
-        if not force and self.last_spoken[0] == line and now - self.last_spoken[1] < RESPEAK_AFTER:
-            return
-        self.last_spoken = (line, now)
+    def announce(self, line: str, kind: str) -> None:
         self.speaker.say(PHRASES[self.args.lang][kind].format(line))
 
     # -- OCR worker
@@ -578,9 +622,11 @@ class OeffiCam:
             roi, foreground = pending
             try:
                 if DEBUG_DIR:
-                    cv2.imwrite(os.path.join(
-                        DEBUG_DIR, time.strftime("%H%M%S") + f"{time.time() % 1:.2f}"[1:]
-                        + "_frame.png"), roi)
+                    # the motion mask too, so replay.py scores exactly what ran live
+                    stem = os.path.join(DEBUG_DIR, time.strftime("%H%M%S")
+                                        + f"{time.time() % 1:.2f}"[1:])
+                    cv2.imwrite(stem + "_frame.png", roi)
+                    cv2.imwrite(stem + "_fg.png", foreground)
                 self._results.put(read_line(roi, foreground))
             except Exception as exc:              # keep the camera alive regardless
                 if DEBUG:
@@ -611,19 +657,22 @@ class OeffiCam:
 
         while not self._results.empty():
             hit = self._results.get()
-            self.votes.append(hit[0] if hit else "")
+            due = self.voter.push(hit[0] if hit else "", time.time())
             self.last_conf = hit[2] if hit else 0.0
             self.last_box = hit[3] if hit else None
-            self.update_decision()
+            self.show_decision()
+            if due:
+                self.announce(*due)
 
-        kind = self.confirmed[1] if self.confirmed else "none"
+        confirmed = self.voter.confirmed
+        kind = confirmed[1] if confirmed else "none"
         color = {"bus": (214, 111, 29), "tram": (29, 59, 214), "none": (120, 120, 120)}[kind]
         if self.last_box is not None:
             x, y, w, h = (mirror_box(self.last_box, display.shape[1])
                           if self.args.mirror else self.last_box)
             cv2.rectangle(display, (x, y), (x + w, y + h), color, 3)
-            if self.confirmed:
-                cv2.putText(display, self.confirmed[0], (x, max(28, y - 10)),
+            if confirmed:
+                cv2.putText(display, confirmed[0], (x, max(28, y - 10)),
                             cv2.FONT_HERSHEY_SIMPLEX, 1.1, color, 3, cv2.LINE_AA)
 
         img = ImageTk.PhotoImage(Image.fromarray(cv2.cvtColor(display, cv2.COLOR_BGR2RGB)))
@@ -640,17 +689,13 @@ class OeffiCam:
 
         self.root.after(1, self.tick)
 
-    def update_decision(self) -> None:
-        line, count = Counter(self.votes).most_common(1)[0]
-        if line and count >= VOTE_MIN:
-            kind = classify(line)[1]
-            self.confirmed = (line, kind)
+    def show_decision(self) -> None:
+        if self.voter.confirmed:
+            line, kind = self.voter.confirmed
             self.result.config(text=line, fg=self.COLORS[kind])
             self.detail.config(text="Bus" if kind == "bus" else "Straßenbahn",
                                fg=self.COLORS[kind])
-            self.announce(line, kind)  # the re-speak cooldown keeps this from nagging
-        elif not line and count >= VOTE_MIN:
-            self.confirmed = None
+        else:
             self.result.config(text="—", fg="#888888")
             self.detail.config(text="Halte ein Schild vor die Kamera", fg="#aaaaaa")
 
@@ -674,7 +719,7 @@ def main() -> None:
     p.add_argument("--height", type=int, default=480)
     p.add_argument("--debug", action="store_true", help="log every OCR attempt")
     p.add_argument("--dump", default="", metavar="DIR",
-                   help="also write ROI + binarized crops there for inspection")
+                   help="record every OCR frame + motion mask there, for replay.py")
     args = p.parse_args()
 
     global DEBUG, DEBUG_DIR
@@ -687,7 +732,7 @@ def main() -> None:
         raise SystemExit("tesseract not found — install with: sudo apt install tesseract-ocr")
 
     root = tk.Tk()
-    OeffiCam(root, args)
+    Ohrweiser(root, args)
     root.mainloop()
 
 
