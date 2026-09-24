@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 line_signs.pdf
+
+# session recordings (ohrweiser.py --dump) and replay output
+rec*/
+announcements*.png
